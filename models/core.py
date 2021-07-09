@@ -8,12 +8,13 @@ logger = Logger().get_logger()
 
 def main():
     # Construct your own dataset using options
-    basedir = "C://Users//Handal//Downloads"
+    basedir = "C://" # Set your own raw data directory ex)C://Users//Downloads
     source_dir = os.path.join(
         basedir, f"2020.AICompetition//data//05_face_verification_Accessories"
     )
     target_dir = f"./data/face_verification_accessories"
 
+    # Set filter by metadata code
     filters = set_filters(
         person=["*"],
         accessories=["001", "003"],
