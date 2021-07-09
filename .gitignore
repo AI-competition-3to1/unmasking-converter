@@ -131,3 +131,7 @@ dmypy.json
 # virtual env
 .venv
 .vscode
+
+# log files
+logs/
+models/data/face_verification_accessories/
