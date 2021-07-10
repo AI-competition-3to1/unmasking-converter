@@ -1,0 +1,9 @@
+*{margin: 0px; padding: 0px;}
+ul{list-style: none;}
+a{text-decoration: none;}
+
+header {
+    width: 800px;
+    height: 95px;
+    background-color: #2d3a4b;
+}
