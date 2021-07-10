@@ -1,0 +1,1 @@
+python AI_django/manage.py runserver
