@@ -1,0 +1,4 @@
+# FIX HERE : CHANGE .yaml file OR .env file
+
+# 카톡방에 올라와있는 setting secret_key 참조
+_SECRET_KEY = "django-insecure-..." 

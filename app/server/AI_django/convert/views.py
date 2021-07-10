@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Profile
+from .config import _PATH_DIR
 import os
 
 # Create your views here.
@@ -15,7 +16,8 @@ def index(request):
     form.save()
     profile=Profile.objects.all()
     profile=profile.last()
-    path_dir="D:\python_venv\AI_ko\AI_django\static\images_converted"
+
+    path_dir= _PATH_DIR
     file_list = os.listdir(path_dir)
     download_file = file_list[-1]
     
