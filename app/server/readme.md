@@ -4,10 +4,10 @@
 1. Install the required packages
     - pip install Django
     - pip install pillow
-3. Command `python manage.py migrate` for migration
-4. modify sample config files to real config file
+3. Command `python manage.py migrate` & 'python manage.py makemigrations convert' for migration
+5. modify sample config files to real config file
     - `AI_Django/config.py.sample` to `AI_Django/config.py`
         - set the secret key 
     - `convert/config.py.sample` to `convert/config.py`
         - set the program path
-5. Command `run.bat`
+6. Command `run.bat`
