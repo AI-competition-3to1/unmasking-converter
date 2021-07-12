@@ -1,6 +1,0 @@
-# FIX HERE : CHANGE .yaml file OR .env file
-
-# set base directory path (parent directory of `app`)
-BASE_DIR = "C:\\" 
-
-_PATH_DIR = BASE_DIR + "\\app\\server\\server\\static\\images_converted"

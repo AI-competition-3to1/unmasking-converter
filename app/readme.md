@@ -6,8 +6,7 @@
     - `pip install pillow`
 3. Command `python manage.py migrate` & `python manage.py makemigrations convert` for migration
 5. modify sample config files to real config file
-    - `server/config.py.sample` to `server/config.py`
+    - `configs/config.py.sample` to `configs/config.py`
         - set the secret key 
-    - `convert/config.py.sample` to `convert/config.py`
         - set the program path
 6. Command `run.bat`

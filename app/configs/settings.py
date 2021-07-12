@@ -18,10 +18,10 @@ from .config import _SECRET_KEY
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # http://127.0.0.1:8000/media/파일경로 설정
-MEDIA_URL = '/media/'
+MEDIA_URL = '/source/'
 
 # 미디어 파일 저장 경로
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'source')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
