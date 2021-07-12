@@ -7,7 +7,7 @@ import pandas as pd
 import torchvision
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
+from tqdm import tqdm
 from torchvision import transforms, datasets, models
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
@@ -38,18 +38,19 @@ def train(config, data_loader):
     for epoch in range(EPOCHS):
         model.train()
         epoch_loss = 0
-        for imgs, annotations in data_loader:
+        for imgs, annotations in tqdm(data_loader):
             imgs = list(img.to(device) for img in imgs)
             annotations = list(
                 {k: v.to(device) for k, v in t.items()} for t in annotations
             )
-            loss_dict = model([imgs[0]], [annotations[0]])
+            loss_dict = model(imgs, annotations)
             losses = sum(loss for loss in loss_dict.values())
 
             optimizer.zero_grad()
             losses.backward()
             optimizer.step()
             epoch_loss += losses
+            
         logger.info(f"Epoch [{epoch + 1}/{EPOCHS}] loss {epoch_loss:.4f}")
 
         if config["save"]:
