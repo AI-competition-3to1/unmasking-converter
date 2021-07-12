@@ -4,4 +4,4 @@ data:
   directory: ../data/mask/
 
 loader:
-  batch_size: 4
+  batch_size: 16

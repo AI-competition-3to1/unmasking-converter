@@ -15,6 +15,7 @@ class MaskDataset(object):
 
         self.imgs = list(sorted(os.listdir(self.imgdir)))
 
+
     def __getitem__(self, idx):
         # load images ad masks
         file_image = 'maksssksksss'+ str(idx) + '.png'
@@ -37,14 +38,14 @@ class MaskDataset(object):
 
 class MaskDataLoader:
     def __init__(self, config, dataset):
-        BATCH_SIZE = config["batch_size"]
+        self.batch_size = config["batch_size"]
         
         def collate_fn(batch):
             return tuple(zip(*batch))
 
         self.loader = DataLoader(
             dataset,
-            batch_size=BATCH_SIZE, 
+            batch_size=self.batch_size, 
             collate_fn=collate_fn
         )
         
