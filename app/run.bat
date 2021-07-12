@@ -1,1 +1,1 @@
-python AI_django/manage.py runserver
+python server/manage.py runserver

@@ -3,4 +3,4 @@
 # set base directory path (parent directory of `app`)
 BASE_DIR = "C:\\" 
 
-_PATH_DIR = BASE_DIR + "\\app\\server\\AI_django\\static\\images_converted"
+_PATH_DIR = BASE_DIR + "\\app\\server\\server\\static\\images_converted"
