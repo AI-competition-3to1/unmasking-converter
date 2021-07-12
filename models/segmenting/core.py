@@ -12,27 +12,25 @@ from torchvision import transforms, datasets, models
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from utils.config import get_config
-from utils.dataset import MaskDataset
+from utils.dataset import MaskDataset, MaskDataLoader
 from utils.images import plot_image
 from utils.logger import Logger
+
 
 MODEL_NAME = 'Mask segmentating model'
 logger = Logger().get_logger()
 
 
 def main(config):
+    # Run Process
     logger.info(f"Run `{MODEL_NAME} model` (mode: {config['mode']})")
 
-    imgs = list(sorted(os.listdir("../data/mask/images/")))
-    labels = list(sorted(os.listdir("../data/mask/annotations/")))
-    data_transform = transforms.Compose([transforms.ToTensor(), ])
-    
-    def collate_fn(batch):
-        return tuple(zip(*batch))
+    # Prepare Dataset
+    logger.info(f"Load Dataset from {config['data']['directory']}")
+    dataset = MaskDataset(config["data"])
+    data_loader = MaskDataLoader(config["loader"], dataset).loader
 
-    dataset = MaskDataset(data_transform, datadir="../data/mask/")
-    data_loader = torch.utils.data.DataLoader(dataset, batch_size=4, collate_fn=collate_fn)
-
+    imgs = dataset.imgs
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     model = get_model_instance_segmentation(3)
 

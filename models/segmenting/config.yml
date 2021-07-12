@@ -1,5 +1,7 @@
 mode: train
+
 data:
-  dataset: ../data/mask/
-  img_dir: images/
-  ano_dir: annotations/
+  directory: ../data/mask/
+
+loader:
+  batch_size: 4

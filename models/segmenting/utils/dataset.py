@@ -1,14 +1,17 @@
 import os
+from torch.utils.data import DataLoader
 from PIL import Image
+from torchvision import transforms
 from utils.generate import generate_target
 
 
 class MaskDataset(object):
-    def __init__(self, transforms, datadir):
-        self.transforms = transforms
-        self.datadir = datadir
-        self.imgdir = os.path.join(datadir, "images")
-        self.anodir = os.path.join(datadir, "annotations")
+    def __init__(self, config):
+        self.transforms = transforms.Compose([transforms.ToTensor(), ])
+        
+        basedir = config["directory"]
+        self.imgdir = os.path.join(basedir, "images")
+        self.anodir = os.path.join(basedir, "annotations")
 
         self.imgs = list(sorted(os.listdir(self.imgdir)))
 
@@ -30,4 +33,18 @@ class MaskDataset(object):
 
     def __len__(self):
         return len(self.imgs)
-    
+
+
+class MaskDataLoader:
+    def __init__(self, config, dataset):
+        BATCH_SIZE = config["batch_size"]
+        
+        def collate_fn(batch):
+            return tuple(zip(*batch))
+
+        self.loader = DataLoader(
+            dataset,
+            batch_size=BATCH_SIZE, 
+            collate_fn=collate_fn
+        )
+        
