@@ -1,16 +1,5 @@
-import os
-import yaml
-import argparse
 import torch
-import numpy as np
-import pandas as pd
-import torchvision
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from tqdm import tqdm
-from torchvision import transforms, datasets, models
-from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from utils.config import get_config
 from utils.dataset import MaskDataset, MaskDataLoader
 from utils.images import plot_image
