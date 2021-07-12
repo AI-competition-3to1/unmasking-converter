@@ -1,2 +1,5 @@
 # temporary config
 config.py
+
+source/images/*
+source/images_converted/*
