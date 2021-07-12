@@ -22,10 +22,10 @@ from django.conf.urls.static import static
 import convert.views
 
 urlpatterns = [
-    path('convert/', include('convert.urls')),
-    #path('convert/upload/',convert.views.upload,name="upload"),
-    #path('convert/upload_create/',convert.views.upload_create,name="upload_create"),
-    #path('convert/profile/',convert.views.profile,name="profile"),
-    path('admin/', admin.site.urls),
+    path("convert/", include("convert.urls")),
+    # path('convert/upload/',convert.views.upload,name="upload"),
+    # path('convert/upload_create/',convert.views.upload_create,name="upload_create"),
+    # path('convert/profile/',convert.views.profile,name="profile"),
+    path("admin/", admin.site.urls),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
