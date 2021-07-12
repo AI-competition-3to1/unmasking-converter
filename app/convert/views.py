@@ -19,6 +19,8 @@ def index(request):
 
     path_dir= _PATH_DIR
     file_list = os.listdir(path_dir)
+    print(_PATH_DIR)
+    print(file_list)
     download_file = file_list[-1]
     
     download_path = 'images_converted/'+download_file
