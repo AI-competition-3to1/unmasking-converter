@@ -4,4 +4,14 @@ data:
   directory: ../data/mask/
 
 loader:
-  batch_size: 16
+  batch_size: 4
+
+model:
+  directory: "."
+  epochs: 25
+  num_classes: 3
+
+  lr: 0.005
+  momentum: 0.9
+  decay: 0.0005
+
