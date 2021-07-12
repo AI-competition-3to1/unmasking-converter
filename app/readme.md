@@ -10,3 +10,4 @@
         - set the secret key 
         - set the program path
 6. Command `run.bat`
+run
