@@ -1,3 +1,4 @@
+mode: train
 data:
   dataset: ../data/mask/
   img_dir: images/

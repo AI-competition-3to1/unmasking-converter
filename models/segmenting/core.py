@@ -14,8 +14,15 @@ from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from utils.config import get_config
 from utils.dataset import MaskDataset
 from utils.images import plot_image
+from utils.logger import Logger
+
+MODEL_NAME = 'Mask segmentating model'
+logger = Logger().get_logger()
+
 
 def main(config):
+    logger.info(f"Run `{MODEL_NAME} model` (mode: {config['mode']})")
+
     imgs = list(sorted(os.listdir("../data/mask/images/")))
     labels = list(sorted(os.listdir("../data/mask/annotations/")))
     data_transform = transforms.Compose([transforms.ToTensor(), ])
@@ -88,4 +95,8 @@ def get_model_instance_segmentation(num_classes):
 
 if __name__ == "__main__":
     config = get_config()
-    main(config)
+
+    try:
+        main(config)
+    except KeyboardInterrupt:
+        logger.warning(f"Abort! (KeyboardInterrupt)")
