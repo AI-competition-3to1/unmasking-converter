@@ -11,10 +11,11 @@ import matplotlib.patches as patches
 from torchvision import transforms, datasets, models
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
+from utils.config import get_config
 from utils.dataset import MaskDataset
 from utils.images import plot_image
 
-def main():
+def main(config):
     imgs = list(sorted(os.listdir("../data/mask/images/")))
     labels = list(sorted(os.listdir("../data/mask/annotations/")))
     data_transform = transforms.Compose([transforms.ToTensor(), ])
@@ -86,4 +87,5 @@ def get_model_instance_segmentation(num_classes):
     return model
 
 if __name__ == "__main__":
-    main()
+    config = get_config()
+    main(config)
