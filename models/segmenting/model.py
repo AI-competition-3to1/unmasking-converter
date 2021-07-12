@@ -12,17 +12,17 @@ def get_model(config):
 
     return model
 
+
 def get_params(config, model):
     params = [p for p in model.parameters() if p.requires_grad]
-    
+
     optimizer = SGD(
         params,
         lr=config["lr"],
         momentum=config["momentum"],
-        weight_decay=config["decay"]
+        weight_decay=config["decay"],
     )
-    
+
     epochs = config["epochs"]
-    
+
     return epochs, optimizer
-    

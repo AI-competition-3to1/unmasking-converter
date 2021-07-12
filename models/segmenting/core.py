@@ -3,7 +3,7 @@ import yaml
 import argparse
 import torch
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import torchvision
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -20,10 +20,11 @@ from model import get_model, get_params
 
 logger = Logger().get_logger()
 
-MODEL_NAME = 'Mask segmentating model'
+MODEL_NAME = "Mask segmentating model"
 MODEL_PATH = "mask_segment_model.pt"
 
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
 
 def train(config, data_loader):
     # Prepare pretrained model - faster rcnn
@@ -39,26 +40,34 @@ def train(config, data_loader):
         epoch_loss = 0
         for imgs, annotations in data_loader:
             imgs = list(img.to(device) for img in imgs)
-            annotations = list({k: v.to(device) for k, v in t.items()} for t in annotations)
+            annotations = list(
+                {k: v.to(device) for k, v in t.items()} for t in annotations
+            )
             loss_dict = model([imgs[0]], [annotations[0]])
-            losses = sum(loss for loss in loss_dict.values())        
+            losses = sum(loss for loss in loss_dict.values())
 
             optimizer.zero_grad()
             losses.backward()
-            optimizer.step() 
+            optimizer.step()
             epoch_loss += losses
         logger.info(f"Epoch [{epoch + 1}/{EPOCHS}] loss {epoch_loss:.4f}")
 
-    model.eval()
+        if config["save"]:
+            loss_str = str(epoch_loss).replace(".", "-")
+            filename = f"mask_segment_model-{loss_str}.pt"
+            logger.info(f"Save the `{MODEL_NAME}` (path : {filename})")
+            torch.save(model, filename)
+
     if config["save"]:
         logger.info(f"Save the `{MODEL_NAME}` (path : {MODEL_PATH})")
-        torch.save(model, MODEL_PATH)
+        torch.save(model, filename)
 
     return model
 
+
 def main(config):
     logger.info(f"Running on {device}")
-    
+
     # Prepare Dataset
     logger.info(f"Load Dataset from {config['data']['directory']}")
     dataset = MaskDataset(config["data"])
@@ -69,23 +78,21 @@ def main(config):
         model = train(config, data_loader)
     elif config["mode"] == "pretrain":
         model = torch.load(MODEL_PATH)
+    model.eval()
 
     for imgs, annotations in data_loader:
         imgs = list(img.to(device) for img in imgs)
-        annotations = [{k: v.to(device) for k, v in t.items()} for t in annotations]
-        break
-    
-    model.eval()
-    preds = model(imgs)
-    
-    # Show results
-    for i in len(imgs):
-        if i > 10:
-            break
-        plot_image(imgs[i], preds[i])
-        plot_image(imgs[i], annotations[i])
+        preds = model(imgs)
+
+        annotations = [{k: v for k, v in t.items()} for t in annotations]
+        # Show results
+        for i in range(len(imgs)):
+            plot_image(imgs[i], preds[i], annotations[i])
+
+        torch.cuda.empty_cache()
 
     logger.info("Process Done")
+
 
 if __name__ == "__main__":
     config = get_config()

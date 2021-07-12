@@ -10,7 +10,9 @@ class Logger:
     def logger_setup(self, verbosity, logfile, logger_name, filelog):
         logger = logging.getLogger(logger_name)
         log_level = (3 - verbosity) * 10
-        format = "[%(levelname)7s] [%(asctime)s] %(module)8s - %(process)5d - %(message)s"
+        format = (
+            "[%(levelname)7s] [%(asctime)s] %(module)8s - %(process)5d - %(message)s"
+        )
         formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S")
         logger.setLevel(log_level)
         logger.propagate = False

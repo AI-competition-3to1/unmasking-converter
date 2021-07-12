@@ -7,26 +7,29 @@ from utils.generate import generate_target
 
 class MaskDataset(object):
     def __init__(self, config):
-        self.transforms = transforms.Compose([transforms.ToTensor(), ])
-        
+        self.transforms = transforms.Compose(
+            [
+                transforms.ToTensor(),
+            ]
+        )
+
         basedir = config["directory"]
         self.imgdir = os.path.join(basedir, "images")
         self.anodir = os.path.join(basedir, "annotations")
 
         self.imgs = list(sorted(os.listdir(self.imgdir)))
 
-
     def __getitem__(self, idx):
         # load images ad masks
-        file_image = 'maksssksksss'+ str(idx) + '.png'
-        file_label = 'maksssksksss'+ str(idx) + '.xml'
+        file_image = "maksssksksss" + str(idx) + ".png"
+        file_label = "maksssksksss" + str(idx) + ".xml"
         img_path = os.path.join(self.imgdir, file_image)
         label_path = os.path.join(self.anodir, file_label)
         img = Image.open(img_path).convert("RGB")
 
-        #Generate Label
+        # Generate Label
         target = generate_target(idx, label_path)
-        
+
         if self.transforms is not None:
             img = self.transforms(img)
 
@@ -39,13 +42,10 @@ class MaskDataset(object):
 class MaskDataLoader:
     def __init__(self, config, dataset):
         self.batch_size = config["batch_size"]
-        
+
         def collate_fn(batch):
             return tuple(zip(*batch))
 
         self.loader = DataLoader(
-            dataset,
-            batch_size=self.batch_size, 
-            collate_fn=collate_fn
+            dataset, batch_size=self.batch_size, collate_fn=collate_fn
         )
-        

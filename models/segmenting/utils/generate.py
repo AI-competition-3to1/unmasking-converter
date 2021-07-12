@@ -1,26 +1,29 @@
 import torch
 from bs4 import BeautifulSoup
 
+
 def generate_box(obj):
-    xmin = int(obj.find('xmin').text)
-    ymin = int(obj.find('ymin').text)
-    xmax = int(obj.find('xmax').text)
-    ymax = int(obj.find('ymax').text)
-    
+    xmin = int(obj.find("xmin").text)
+    ymin = int(obj.find("ymin").text)
+    xmax = int(obj.find("xmax").text)
+    ymax = int(obj.find("ymax").text)
+
     return [xmin, ymin, xmax, ymax]
 
+
 def generate_label(obj):
-    if obj.find('name').text == "with_mask":
+    if obj.find("name").text == "with_mask":
         return 1
-    elif obj.find('name').text == "mask_weared_incorrect":
+    elif obj.find("name").text == "mask_weared_incorrect":
         return 2
     return 0
 
-def generate_target(image_id, file): 
+
+def generate_target(image_id, file):
     with open(file) as f:
         data = f.read()
-        soup = BeautifulSoup(data, 'xml')
-        objects = soup.find_all('object')
+        soup = BeautifulSoup(data, "xml")
+        objects = soup.find_all("object")
 
         num_objs = len(objects)
 
@@ -36,5 +39,5 @@ def generate_target(image_id, file):
         target["boxes"] = boxes
         target["labels"] = labels
         target["image_id"] = img_id
-        
+
         return target
