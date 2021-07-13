@@ -46,8 +46,8 @@ def train(config, data_loader):
             losses.backward()
             optimizer.step()
             epoch_loss += losses
-            pbar.set_postfix({"Loss" : f"{epoch_loss:.4f}"})
-            
+            pbar.set_postfix({"Loss": f"{epoch_loss:.4f}"})
+
         logger.info(f"Epoch [{epoch + 1}/{EPOCHS}] loss {epoch_loss:.4f}")
 
         if config["save"]:
@@ -92,7 +92,7 @@ def main(config):
         for i in range(len(imgs)):
             if config["data"]["visualize"]:
                 plot_image(imgs[i], preds[i], annotations[i])
-            
+
             save_cropped_image(config["data"], imgs[i], preds[i])
 
     logger.info("Process Done")
