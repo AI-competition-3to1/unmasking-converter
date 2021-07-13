@@ -10,8 +10,8 @@ from model import get_model, get_params
 
 logger = Logger().get_logger()
 
-MODEL_NAME = "Mask segmentating model"
-MODEL_PATH = "mask_segment_model.pt"
+MODEL_NAME = "Mask detect model"
+MODEL_PATH = "mask_detect_model.pt"
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
@@ -81,6 +81,7 @@ def main(config):
     model = torch.load("pretrain/mask_detect_model-ep17-16_2006.pt")
     model.eval()
 
+    logger.info(f"Save cropped image to {config['data']['output_directory']}")
     for imgs, annotations in data_loader:
         imgs = list(img.to(device) for img in imgs)
         preds = model(imgs)

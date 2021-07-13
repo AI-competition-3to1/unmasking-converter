@@ -1,7 +1,7 @@
 mode: pretrain
 
 data:
-  visualize: True
+  visualize: False
   directory: ../data/mask/
   output_directory: "../data/maskface/"
 
