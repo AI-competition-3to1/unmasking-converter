@@ -1,3 +1,4 @@
+import os
 import torch
 from bs4 import BeautifulSoup
 
@@ -20,6 +21,13 @@ def generate_label(obj):
 
 
 def generate_target(image_id, file):
+    if not os.path.exists(file):
+        target = {}
+        target["boxes"] = None
+        target["labels"] = None
+        target["image_id"] = None
+        return target
+
     with open(file) as f:
         data = f.read()
         soup = BeautifulSoup(data, "xml")

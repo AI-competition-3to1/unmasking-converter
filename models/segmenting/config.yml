@@ -1,17 +1,17 @@
-mode: train
+mode: pretrain
 
 data:
+  visualize: True
   directory: ../data/mask/
+  output_directory: "../data/maskface/"
 
 loader:
-  batch_size: 4
+  batch_size: 2
 
 model:
-  directory: "."
+  directory: "pretrain/"
   epochs: 25
-  num_classes: 3
+  num_classes: 2
 
-  lr: 0.005
-  momentum: 0.9
-  decay: 0.0005
+  lr: 0.0001
 

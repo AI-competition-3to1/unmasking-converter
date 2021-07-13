@@ -1,4 +1,7 @@
+import os
+import torch
 from torch.optim import SGD
+from torch.optim import Adam
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
@@ -16,11 +19,9 @@ def get_model(config):
 def get_params(config, model):
     params = [p for p in model.parameters() if p.requires_grad]
 
-    optimizer = SGD(
+    optimizer = Adam(
         params,
         lr=config["lr"],
-        momentum=config["momentum"],
-        weight_decay=config["decay"],
     )
 
     epochs = config["epochs"]
