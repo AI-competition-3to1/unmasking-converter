@@ -38,7 +38,7 @@ def plot_image(img, preds, annos, block=True):
 
 
 def save_cropped_image(config, img, preds):
-    basedir = config["output_directory"]
+    basedir = os.path.join(config["directory"], "output")
 
     for box, label in zip(preds["boxes"], preds["labels"]):
         xmin, ymin, xmax, ymax = box_scaler(box)["box"]

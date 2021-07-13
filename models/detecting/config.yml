@@ -3,7 +3,6 @@ mode: pretrain
 data:
   visualize: False
   directory: ../data/mask/
-  output_directory: "../data/maskface/"
 
 loader:
   batch_size: 2
@@ -11,7 +10,7 @@ loader:
 model:
   directory: "pretrain/"
   epochs: 25
-  num_classes: 2
+  num_classes: 3
 
   lr: 0.0001
 

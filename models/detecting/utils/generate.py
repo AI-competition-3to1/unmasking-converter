@@ -22,6 +22,7 @@ def generate_label(obj):
 
 def generate_target(image_id, file):
     if not os.path.exists(file):
+        print("annotation file is not exsits")
         target = {}
         target["boxes"] = None
         target["labels"] = None
@@ -32,8 +33,6 @@ def generate_target(image_id, file):
         data = f.read()
         soup = BeautifulSoup(data, "xml")
         objects = soup.find_all("object")
-
-        num_objs = len(objects)
 
         boxes = []
         labels = []

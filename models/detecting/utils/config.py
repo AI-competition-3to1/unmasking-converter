@@ -6,7 +6,7 @@ import argparse
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, default="config.yml", help="model.yml path")
-    parser.add_argument("--save", type=bool, default=True)
+    parser.add_argument("--checkpoint", type=bool, default=False, help="save model at every epochs")
 
     return parser.parse_args()
 
@@ -20,6 +20,6 @@ def get_config():
     with open(args.data) as f:
         config = yaml.safe_load(f)
 
-    config["save"] = args.save
+    config["checkpoint"] = args.checkpoint
 
     return config

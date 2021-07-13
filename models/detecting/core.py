@@ -12,14 +12,15 @@ logger = Logger().get_logger()
 
 MODEL_NAME = "Mask detect model"
 MODEL_PATH = "mask_detect_model.pt"
+PRETRAINED_MODEL = os.path.join("pretrain", MODEL_PATH)
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
 def train(config, data_loader):
     # Prepare pretrained model - faster rcnn
-    if os.path.exists(MODEL_PATH):
-        model = torch.load(MODEL_PATH)
+    if os.path.exists(PRETRAINED_MODEL):
+        model = torch.load(PRETRAINED_MODEL)
     else:
         model = get_model(config["model"])
         model.to(device)
@@ -75,13 +76,28 @@ def main(config):
     dataset = MaskDataset(config["data"])
     data_loader = MaskDataLoader(config["loader"], dataset).loader
 
-    logger.info(f"Model : `{MODEL_NAME}` (mode: {config['mode']}) ")
+    logger.info(f"`{MODEL_NAME}` (mode: {config['mode']}) ")
+
+    # Train the model
     if config["mode"] == "train":
         model = train(config, data_loader)
-    model = torch.load("pretrain/mask_detect_model-ep17-16_2006.pt")
+    elif config["mode"] == "pretrain":
+        MODEL_NOTFOUND_MSG = f"Pretrained model({PRETRAINED_MODEL}) is not found"
+        assert os.path.exists(PRETRAINED_MODEL), MODEL_NOTFOUND_MSG
+        model = torch.load(PRETRAINED_MODEL)
+    else:
+        MODE_ERROR_MSG = "your `config.yml` has problem! Please check `MODE`"
+        assert config["mode"] in ("train", "pretrain"), MODE_ERROR_MSG
+        
     model.eval()
 
-    logger.info(f"Save cropped image to {config['data']['output_directory']}")
+    # Make output directory
+    output_dir = os.path.join(config["data"]["directory"], "outputs")
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+
+    # Crop detected images
+    logger.info(f"Save cropped image to {output_dir}")
     for imgs, annotations in data_loader:
         imgs = list(img.to(device) for img in imgs)
         preds = model(imgs)
