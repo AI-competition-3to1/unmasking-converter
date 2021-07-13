@@ -1,13 +1,12 @@
 # How to run Mask detect model
 
 0. Run virtual environment
-1. Download [kaggle face mask dataset](https://www.kaggle.com/andrewmvd/face-mask-detection)
-2. Set your own config settings from `config.yaml`
-    - `pip install Django`
-    - `pip install pillow`
-3. Command `python manage.py migrate` & `python manage.py makemigrations convert` for migration
-5. modify sample config files to real config file
-    - `configs/config.py.sample` to `configs/config.py`
-        - set the secret key 
-        - set the program path
-6. Command `run.bat`
+1. Install the required packages
+2. Download dataset from [kaggle face mask dataset](https://www.kaggle.com/andrewmvd/face-mask-detection) into `../data/mask`
+    - if you want to use another name for input data directory, Please check `config.yaml` data - directory
+3. Downlaod pretrained model into `./pretrain/` directory
+4. Set `config.yaml` your own config setting
+    - `mode` : option for model
+    - `data:visualize`  : option for visaulizing output
+5. Command `python core.py` 
+    - `--checkpoint True` option for saving checkpoint model during model train(default False)
