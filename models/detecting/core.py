@@ -1,5 +1,6 @@
 import os
 import torch
+import numpy as np
 from tqdm import tqdm
 from utils.config import get_config
 from utils.dataset import MaskDataset, MaskDataLoader
@@ -107,10 +108,17 @@ def main(config):
 
         # Show results
         for i in range(len(imgs)):
-            if config["data"]["visualize"]:
-                plot_image(imgs[i], preds[i], annotations[i])
+            img = np.array(imgs[i].cpu().data.permute(1, 2, 0))
+            pred = {
+                "boxes": preds[i]["boxes"].cpu().data,
+                "labels": preds[i]["labels"].cpu().data
+            }
+            anno = annotations[i]
 
-            save_cropped_image(config["data"], imgs[i], preds[i])
+            if config["data"]["visualize"]:
+                plot_image(img, pred, anno)
+
+            save_cropped_image(config["data"], img, pred)
 
     logger.info("Process Done")
 

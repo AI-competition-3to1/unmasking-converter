@@ -11,10 +11,6 @@ def plot_image(img, preds, annos, block=True):
     rows = 1
     cols = 3
 
-    img = np.array(img.cpu().data.permute(1, 2, 0))
-    preds["boxes"] = preds["boxes"].cpu().data
-    preds["labels"] = preds["labels"].cpu().data
-
     ax1 = fig.add_subplot(rows, cols, 1)
     ax1.imshow(img)
     ax1.set_title("Target")
@@ -38,7 +34,7 @@ def plot_image(img, preds, annos, block=True):
 
 
 def save_cropped_image(config, img, preds):
-    basedir = os.path.join(config["directory"], "output")
+    basedir = os.path.join(config["directory"], "outputs")
 
     for box, label in zip(preds["boxes"], preds["labels"]):
         xmin, ymin, xmax, ymax = box_scaler(box)["box"]
@@ -56,7 +52,7 @@ def save_cropped_image(config, img, preds):
 
         if label == 1:
             file_count = len(os.listdir(basedir))
-            filename = f"facemask_{file_count}.jpg"
+            filename = f"cropped_facemask_{file_count}.jpg"
             filepath = os.path.join(basedir, filename)
             resized_img.save(filepath)
 
