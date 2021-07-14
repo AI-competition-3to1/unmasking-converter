@@ -1,81 +1,33 @@
-![Logo](imgs/joligan.svg)
-
-
-JoliGAN is an implementation of an unpaired image to image translation. It uses cycle consistency such as CycleGAN but it allows the use of :
-- more generator architectures such as styleGAN2 decoder / mobile resnet, attention resnet (and a mobile version)
-- semanctic consistency 
-- new losses : out mask loss, w loss (for sty2 decoder)
- 
-JoliGAN also includes an implementation of contrastive unpaired translation (CUT) enhanced with our achitectures and losses.
-
-## Prerequisites
+# Prerequisites
 - Linux
 - Python 3
 - CPU or NVIDIA GPU + CUDA CuDNN
 
-## Getting Started
-### Installation
+# Getting Started
 
-- Clone this repo:
-```bash
-git clone --recursive https://github.com/jolibrain/joliGAN.git
-cd joliGAN
-```
-
-- Install [PyTorch](http://pytorch.org) and other dependencies (torchvision, [visdom](https://github.com/facebookresearch/visdom) and [dominate](https://github.com/Knio/dominate), [FID](https://github.com/jolibrain/pytorch-fid)).  
+## Installation
   - For pip users, please type the command `pip install -r requirements.txt`.
+  - If you use gpu while training, 
+    - CUDA 10.2, `pip install torch==1.9.0+cu102 torchvision==0.10.0+cu102 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html`
+    - CUDA 11.1, `pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html`
+  - If you use cpu while training, `pip install torch torchvision torchaudio`
 
 ## JoliGAN train
 
-- Options :
+### Position of the dataset
+  - In the ./data/trainA Folder : Img_masked dataset
+  - In the ./data/trainB Folder : Img_unmasked dataset
 
-|Model|Network|Decoder|
-|-|-|-|
-|CycleGAN, CycleGAN_semantic, CycleGAN_semantic_mask, CUT, CUT_semantic|resnet, Unet, mobile_resnet|Vanilla, Sty2, Attention resnet|
+### train code
+  - `visdom`
+  - another cmd `python train.py --dataroot ./data/ --model cycle_gan --pool_size 50 --no_dropout --no_rotate --name face_masks_removal`
 
-<br>
-With a dataset located in directory `dataroot`:
+### Store the model trained
+  - You can find `./checkpoints/face_masks_removal/latest_net_G_A.pth` model
+  - Convert .pth file to .pt file
+  - If you use gpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256`
+  - If you use cpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256 --cpu`
 
-- Train a [cycleGAN](docs/cyclegan.md) :
- 
-You can tune the hyperparameters in `./scripts/train_cyclegan.sh` and then use the following line command.
-```
-bash ./scripts/train_cyclegan.sh dataroot
-```
-<br>
-
-- Train a [cycleGAN with labels](docs/cyclegan_semantic.md) :
- 
-You can tune the hyperparameters in `./scripts/train_cyclegan_semantic.sh` and then use the following line command.
-```
-bash ./scripts/train_cyclegan_semantic.sh dataroot
-```
-<br>
-
-- Train a [cycleGAN with mask labels](docs/cyclegan_semantic_mask.md) :
- 
-You can tune the hyperparameters in `./scripts/train_cyclegan_semantic_mask.sh` and then use the following line command.
-```
-bash ./scripts/train_cyclegan_semantic_mask.sh dataroot
-```
-## [Datasets](docs/datasets.md)
-- Unaligned : apple2orange, horse2zebra
-- Unaligned with labels : svhn2mnist
-- Unaligned with mask labels : glasses2noglasses,
-
-
-## [Dataloader](docs/dataloader.md)
-
-To choose a dataloader please use the flag `--dataset_mode dataloader_name`.
-There are three dataloaders for different dataset architectures :
-- Unaligned (`unaligned`) 
-- Unaligned with labels (`unaligned_labeled`)
-- Unaligned with mask labels (`unaligned_labeled_mask`)
-
-## Acknowledgments
-Our code is inspired by [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix), [CUT](https://github.com/pnsuau/contrastive-unpaired-translation) and [AttentionGAN](https://github.com/Ha0Tang/AttentionGAN).
-
-## Display training losses from a previous training
-```
-python3 util/load_display_losses.py --loss_log_file_path path_to_repo_of_loss.json --port 8097 --env_name visdom_environment_name
-```
+### Test
+  - If you use cpu, `python gen_jit_single_image.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pt --img-size 256 --img-in /path/to/img_domain_A.png --img-out /path/to/img_domain_B.png --cpu`
+  - If you use gpu, `python gen_jit_single_image.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pt --img-size 256 --img-in /path/to/img_domain_A.png --img-out /path/to/img_domain_B.png`
