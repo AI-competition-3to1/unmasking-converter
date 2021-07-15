@@ -15,7 +15,7 @@ def plot_image(img, preds, annos, block=True):
     ax1.imshow(img)
     ax1.set_title("Target")
     ax1.axis("off")
-    draw_patch(ax1, preds)
+    draw_patch(ax1, annos)
 
     ax2 = fig.add_subplot(rows, cols, 2)
     ax2.imshow(img)
