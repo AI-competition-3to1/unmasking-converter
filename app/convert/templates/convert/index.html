@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -73,18 +74,20 @@
                         <div class="featured-text text-center text-lg-left">
                             <h4>사진을 업로드해주세요.</h4>
                             <p class="text-black-50 mb-0">변환하고자하는 사진을 버튼을 눌러 업로드해주세요.</p>
+                            {% if index %}
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <br>
                                 <input type="file" name="image" class="btn btn-primary" ><br><br>
                                 <input type="submit" class="btn btn-primary" />
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 <!-- Project One Row-->
                 <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
-                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-left align-items-center"><input class="btn btn-primary" type="button" value="변환" style="width:300pt; height:150pt"></div></div>
+                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-left align-items-center"><a href="{% url 'convert' %}" class="btn btn-primary" style="width:300pt; height:150pt"></a></div></div>
                     <div class="col-lg-6">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
@@ -113,6 +116,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row gx-0 justify-content-center">
+                    <div class="col-lg-6 order-lg-first"></div>
+                {% if not index %}
+                <div class="col-lg-6 text-center align-items-center">
+                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-center align-items-center"><a href="{% url 'index' %}" class="btn btn-primary">처음으로</a></div></div>
+                {% endif %}
+            </div>
+            </div>
             </div>
         </section>
         
