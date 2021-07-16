@@ -66,28 +66,38 @@
         <section class="projects-section bg-light" id="projects">
             <div class="container px-4 px-lg-5">
                 <!-- Featured Project Row-->
-                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
-                    {% if profile.image %}
-                    <div class="col-xl-8 col-lg-7 text-center"><img class="img-fluid mb-3 mb-lg-0" src="{{ profile.image.url }}" /></div>
-                    {% endif %}
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="featured-text text-center text-lg-left">
-                            <h4>사진을 업로드해주세요.</h4>
-                            <p class="text-black-50 mb-0">변환하고자하는 사진을 버튼을 눌러 업로드해주세요.</p>
-                            {% if index %}
+                <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
+                    
+                    <div class="col-lg-6">
+                        <div class="bg-black text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">
+                                    <h4 class="text-white">사진을 업로드해주세요.</h4>
+                                    <p class="mb-0 text-white-50">변환하고자하는 사진을 버튼을 눌러 업로드해주세요.</p>
+                                    <hr class="d-none d-lg-block mb-0 ms-0" />
+                                    {% if index %}
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <br>
                                 <input type="file" name="image" class="btn btn-primary" ><br><br>
                                 <input type="submit" class="btn btn-primary" />
                             </form>
                             {% endif %}
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-lg-6">
+                        {% if profile.image %}
+                        <div class=" text-center align-items-center py-xxl-2">
+                        <img class="img-fluid mb-3 mb-lg-0" src="{{ profile.image.url }}" width = "256" height = "256"/>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Project One Row-->
                 <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
-                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-left align-items-center"><a href="{% url 'convert' %}" class="btn btn-primary" style="width:300pt; height:150pt"></a></div></div>
+                    
+                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-left align-items-center py-xxl-5"><a href="{% url 'convert' %}" class="btn btn-primary" >변환</a></div></div>
                     <div class="col-lg-6">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
@@ -102,8 +112,15 @@
                 </div>
                 <!-- Project Two Row-->
                 <div class="row gx-0 justify-content-center">
-                    <div class="col-lg-6 text-center align-items-center">
-                    <a href="{% static download_path %}" download><img class="img-fluid" src="{% static download_path %}" alt="..." /><br></a></div>
+                    
+                    <div class="col-lg-6">
+                        {% if not index %}
+                        <div class="py-xxl-2 text-center align-items-center">
+                    <a href="{% static download_path %}" download><img class="img-fluid" src="{% static download_path %}" alt="..." /><br></a>
+                </div>
+                    {% endif %}
+                </div>
+                    
                     <div class="col-lg-6 order-lg-first">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
@@ -119,11 +136,10 @@
                 <div class="row gx-0 justify-content-center">
                     <div class="col-lg-6 order-lg-first"></div>
                 {% if not index %}
-                <div class="col-lg-6 text-center align-items-center">
-                    <div class="col-lg-6"> <div class="featured-text text-center text-lg-center align-items-center"><a href="{% url 'index' %}" class="btn btn-primary">처음으로</a></div></div>
+                    <div class="col-lg-6 py-xxl-2"> <div class="featured-text text-center text-lg-right align-items-center"><a href="{% url 'index' %}" class="btn btn-primary">처음으로</a></div></div>
                 {% endif %}
-            </div>
-            </div>
+                    
+                </div>
             </div>
         </section>
         
