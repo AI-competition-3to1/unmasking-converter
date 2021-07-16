@@ -231,7 +231,7 @@ class Visualizer():
                 win=self.display_id)
         except VisdomExceptionBase:
             self.create_visdom_connections()
-
+        
         with open(self.losses_path, 'w') as fp:
             json.dump(self.plot_data, fp)
 

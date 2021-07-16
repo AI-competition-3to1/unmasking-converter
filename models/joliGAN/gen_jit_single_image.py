@@ -1,4 +1,6 @@
+import os
 import sys
+import tqdm
 import cv2
 import torch
 from torchvision import transforms
@@ -18,27 +20,34 @@ model = torch.jit.load(args.model_in_file)
 if not args.cpu:
     model = model.cuda()
 
-# reading image
-img = cv2.imread(args.img_in)
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img = cv2.resize(img, (args.img_size,args.img_size))
+base_dir = "../data/mask/outputs"
+files = os.listdir(base_dir)
 
-# preprocessing
-tranlist = [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
-tran = transforms.Compose(tranlist)
-img_tensor = tran(img)
-if not args.cpu:
-    img_tensor = img_tensor.cuda()
-#print('tensor shape=',img_tensor.shape)
+for i, filename in enumerate(files):
+    if i % 100 == 0:
+        print(f"{i} / {len(files)}")
+    imgpath = os.path.join(args.img_in, filename) if os.path.isdir(args.img_in) else args.img_in
 
-# run through model
-out_tensor = model(img_tensor.unsqueeze(0))[0].detach()
-#print(out_tensor)
-#print(out_tensor.shape)
+    img = cv2.imread(imgpath)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (args.img_size,args.img_size))
 
-# post-processing
-out_img = out_tensor.data.cpu().float().numpy()
-out_img = (np.transpose(out_img, (1, 2, 0)) + 1) / 2.0 * 255.0
-out_img = cv2.cvtColor(out_img, cv2.COLOR_RGB2BGR)
-cv2.imwrite(args.img_out,out_img)
-print('Successfully generated image ',args.img_out)
+    # preprocessing
+    tranlist = [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
+    tran = transforms.Compose(tranlist)
+    img_tensor = tran(img)
+    if not args.cpu:
+        img_tensor = img_tensor.cuda()
+    #print('tensor shape=',img_tensor.shape)
+
+    # run through model
+    out_tensor = model(img_tensor.unsqueeze(0))[0].detach()
+
+    # post-processing
+    out_img = out_tensor.data.cpu().float().numpy()
+    out_img = (np.transpose(out_img, (1, 2, 0)) + 1) / 2.0 * 255.0
+    out_img = cv2.cvtColor(out_img, cv2.COLOR_RGB2BGR)
+    
+    outpath = os.path.join(args.img_out, filename) if os.path.isdir(args.img_out) else args.img_out
+    cv2.imwrite(outpath, out_img)
+    print('Successfully generated image ', outpath)

@@ -1,7 +1,7 @@
 mode: pretrain
 
 data:
-  visualize: False
+  visualize: True
   directory: ../data/mask/
 
 loader:

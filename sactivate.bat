@@ -1,0 +1,1 @@
+.sgvenv/Scripts/activate.bat

@@ -20,14 +20,14 @@
 
 ### train code
   - `visdom`
-  - another cmd `python train.py --dataroot ./data/ --model cycle_gan --pool_size 50 --no_dropout --no_rotate --name face_masks_removal`
+  - another cmd `python train.py --pool_size 64 --no_dropout --no_rotate`
 
 ### Store the model trained
   - You can find `./checkpoints/face_masks_removal/latest_net_G_A.pth` model
   - Convert .pth file to .pt file
-  - If you use gpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256 --n_epochs 100 --n_epochs_decay 100`
+  - If you use gpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256`
   - If you use cpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256 --cpu --n_epochs 100 --n_epochs_decay 100`
 
 ### Test
   - If you use cpu, `python gen_jit_single_image.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pt --img-size 256 --img-in /path/to/img_domain_A.png --img-out /path/to/img_domain_B.png --cpu`
-  - If you use gpu, `python gen_jit_single_image.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pt --img-size 256 --img-in /path/to/img_domain_A.png --img-out /path/to/img_domain_B.png`
+  - If you use gpu, `python gen_jit_single_image.py --model-in-file ./checkpoints/white-full/latest_net_G_A.pt --img-size 256 --img-in ../data/joli/valA/00000.png --img-out ../data/joli/valA/00000.png`

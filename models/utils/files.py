@@ -57,3 +57,12 @@ def search_file(directory: Path, filename=None, recursive=True, extension=None):
 
     assert len(files), f"No files is not founded : {target_file}"
     return files
+
+if __name__ == "__main__":
+    files = glob.glob("C:\\Users\\Handal\\Downloads\\thumbnails128x128\\thumbnails128x128\\*")
+    
+    src_dir = "C:\\Users\\Handal\\Downloads\\thumbnails128x128\\thumbnails128x128\\"
+    dst_dir = "C:\\Users\\Handal\\github\\unmasking-converter\\models\\data\\joli\\trainB\\"
+    for f in files:
+        basename = f.split("\\")[-1]
+        shutil.move(src_dir + basename, dst_dir + basename)
