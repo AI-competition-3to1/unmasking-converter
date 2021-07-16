@@ -28,8 +28,11 @@ def index(request):
 
     path_dir = _PATH_DIR
     file_list = os.listdir(path_dir)
-    download_file = file_list[0]
-
+    
+    try:
+        download_file = file_list[0]
+    except:  # 이미지가 없어도 그냥 지나가도록-!
+        download_file = ""
     download_path = "images_converted/" + download_file
 
     return render(
@@ -58,8 +61,10 @@ def convert(request):
     img_size = 256
 
     model = torch.jit.load(model_in_file)
-    #if not args.cpu:
-    #    model = model.cuda()
+
+    #########################################
+    # if you use gpu
+    model = model.cuda()
 
     # reading image
     img = cv2.imread(img_in)
@@ -70,8 +75,10 @@ def convert(request):
     tranlist = [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     tran = transforms.Compose(tranlist)
     img_tensor = tran(img)
-    #if not args.cpu:
-    #    img_tensor = img_tensor.cuda()
+    #########################################
+    # if you use gpu
+    img_tensor = img_tensor.cuda()
+    
     #print('tensor shape=',img_tensor.shape)
 
     # run through model
