@@ -7,9 +7,11 @@ import sys
 import cv2
 import torch
 from torchvision import transforms
-from torchvision.utils import save_image
+from torchvision.utils import save_image, make_grid
 import numpy as np
-
+import matplotlib.pyplot as plt
+from models.unet import UNet
+from models.gated_network import GatedGenerator
 
 # Create your views here.
 def index(request):
