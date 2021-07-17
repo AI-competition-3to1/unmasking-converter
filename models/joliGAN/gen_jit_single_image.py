@@ -20,7 +20,7 @@ model = torch.jit.load(args.model_in_file)
 if not args.cpu:
     model = model.cuda()
 
-base_dir = "../data/mask/outputs"
+base_dir = args.img_in
 files = os.listdir(base_dir)
 
 for i, filename in enumerate(files):
