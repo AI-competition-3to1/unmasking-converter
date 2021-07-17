@@ -6,7 +6,7 @@ from torchvision.utils import make_grid
 from models.unet import UNet
 from models.gated_network import GatedGenerator
 
-def unmask(unet_path,gated_conv_path,img):
+def unmask(unet_path,gated_conv_path,img,save_path):
     myUnet=UNet()
     myUnet.load_state_dict(torch.load(unet_path))
     image=cv2.imread(img, cv2.IMREAD_COLOR)
@@ -24,5 +24,5 @@ def unmask(unet_path,gated_conv_path,img):
     myGnet.load_state_dict(torch.load(gated_conv_path))
     l=myGnet(image,seg)
     g=make_grid(image*(1-seg)+l[1]*seg).permute(1,2,0).detach().numpy()
-    g=cv2.cvtColor(g, cv2.COLOR_BGR2RGB)
-    plt.imshow(g)
+    g*=255
+    cv2.imwrite(save_path,g)
