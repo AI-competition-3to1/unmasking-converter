@@ -25,7 +25,7 @@
 ### Store the model trained
   - You can find `./checkpoints/face_masks_removal/latest_net_G_A.pth` model
   - Convert .pth file to .pt file
-  - If you use gpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256 --n_epochs 100 --n_epochs_decay 100`
+  - If you use gpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256`
   - If you use cpu, `python export_jit_model.py --model-in-file ./checkpoints/face_masks_removal/latest_net_G_A.pth --img-size 256 --cpu`
 
 ### Test
