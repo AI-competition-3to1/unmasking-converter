@@ -107,6 +107,8 @@ def convert(request):
 
 def unmask(request):
 
+    ind = False
+    
     profile = Profile.objects.all()
     profile = profile.last()
 
@@ -135,6 +137,8 @@ def unmask(request):
     g*=255
     cv2.imwrite(save_path,g)
 
+    download_path = "images_converted/" + profile.image.url.split('/')[-1]
+    
     return render(
         request,
         "convert/index.html",
