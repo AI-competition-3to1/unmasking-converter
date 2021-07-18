@@ -2,7 +2,7 @@
 
 # set base directory path (parent directory of `app`)
 BASE_DIR = "C:\\" 
-_PATH_DIR = BASE_DIR + "\\app\\source\\images_converted"
+_PATH_DIR = BASE_DIR + "\\app\\static\\images_converted"
 
 # 카톡방에 올라와있는 setting secret_key 참조
 _SECRET_KEY = "django-insecure-..."

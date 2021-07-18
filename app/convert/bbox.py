@@ -51,15 +51,15 @@ def box_scaler(box):
 
     length = width if width > height else height
 
-    xmin = int(xcenter - length / 2)
+    xmin = max(int(xcenter - length / 2), 0)
     xmax = int(xcenter + length / 2)
-    ymin = int(ycenter - length / 2)
+    ymin = max(int(ycenter - length / 2), 0)
     ymax = int(ycenter + length / 2)
 
-    sxmin = int(xcenter - 0.8 * length / 2)
-    sxmax = int(xcenter + 0.8 * length / 2)
-    symin = int(ycenter - 0.8 * length / 2)
-    symax = int(ycenter + 0.8 * length / 2)
+    sxmin = max(int(xcenter - length / 6),0)
+    sxmax = int(xcenter + length / 6)
+    symin = max(int(ycenter - length / 6), 0)
+    symax = int(ycenter + length / 6)
 
     return {
         "box": (xmin, ymin, xmax, ymax),

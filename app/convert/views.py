@@ -130,22 +130,21 @@ def detect(profile):
     img = transform(image).unsqueeze(0)
     img = img.to(torch.device("cuda"))
 
-    pred = model(img)
+    pred = model(img)[0]
+    pred = scale_bbox(pred)
     img = np.array(img[0].cpu().data.permute(1, 2, 0))
-    pred = pred[0]["boxes"].cpu().data
+    pred = pred["boxes"].cpu().data
     
     boxes = list()
     imgs = list()
     for box in pred:
-        logger.info(f"box {box}")
         xmin, ymin, xmax, ymax = box_scaler(box)["box"]
 
-        bbox = (max(0, xmin), max(0, ymin), min(img.shape[1], xmax), min(img.shape[0], ymax))
+        bbox = (xmin, ymin, min(img.shape[1], xmax), min(img.shape[0], ymax))
         xmin, ymin, xmax, ymax = bbox
 
-        logger.info(f"origin {img.shape}")
         cropped_img = img[ymin:ymax, xmin:xmax]
-        if cropped_img.shape[0] < 20:
+        if cropped_img.shape[0] < 25:
             logger.info(cropped_img.shape)
             continue
 
@@ -163,6 +162,9 @@ def unmask(request):
     profile = Profile.objects.all()
     profile = profile.last()
     
+    img_path = f"{BASE_DIR}\\app\\{profile.image.url}"
+    origin_image = Image.open(img_path).convert("RGB")
+    
     unet_path = BASE_DIR + "\\app\\weights\\unet.pt"
     gated_conv_path = BASE_DIR + "\\app\\weights\\gated.pt"
     myUnet = UNet()
@@ -170,7 +172,7 @@ def unmask(request):
     
     count = 0
     boxes, imgs = detect(profile)
-    for img in imgs:
+    for box, img in zip(boxes, imgs):
         filedir = f"{BASE_DIR}/app/source/"
         filename = f"test{count}.png"
         filepath = os.path.join(filedir, filename)
@@ -195,19 +197,26 @@ def unmask(request):
         l = myGnet(image, seg)
         g = make_grid(image * (1 - seg) + l[1] * seg).permute(1, 2, 0).detach().numpy()
         g *= 255
+        g = np.reshape(g, (256, 256, 3))
 
-        cv2.imwrite(filepath, g)
-        logger.info(f"File is saved to {filepath}, {g.size}")
-    ##########
-    
-    
-    
-    
-    ########
-    # img = BASE_DIR + "\\app\\" + profile.image.url
+        img = cv2.cvtColor(np.uint8(g), cv2.COLOR_BGR2RGB)
+        img = Image.fromarray(img, 'RGB')
+        
+        height = box[3] - box[1]
+        width = box[2] - box[0]
+
+        img = img.resize((width, height))
+        img.save(filepath)
+        logger.info(f"Pearson : {count}")
+
+        origin_image.paste(img, (box[0], box[1]))
+   
+    # ########
+    save_path = _PATH_DIR+ '\\' + profile.image.url.split('/')[-1]
+    origin_image.save(save_path)
 
     download_path = "images_converted/" + profile.image.url.split("/")[-1]
-
+    
     return render(
         request,
         "convert/index.html",
